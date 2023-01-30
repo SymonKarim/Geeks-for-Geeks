@@ -1,0 +1,29 @@
+class Solution{
+public:
+    int sr,sc;
+    int solve(int n, int m, vector<vector<int>>& mat, vector<vector<int>>& dp,int &mx)
+    {
+        if(n>=sr or m>= sc) return 0;
+        if(dp[n][m]!=-1) return dp[n][m];
+        
+        int right = solve(n+1,m,mat,dp,mx);
+        int diagonal = solve(n+1,m+1,mat,dp,mx);
+        int down =  solve(n,m+1,mat,dp,mx);
+        
+        if(mat[n][m]==1) {
+          int  ans = 1+ min(right,min(down,diagonal));
+          dp[n][m] = ans;
+          mx = max(ans,mx);
+          return ans;
+        }else return dp[n][m]=0;
+        
+        return dp[n][m];
+    }
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        sr = mat.size(), sc =mat[0].size();
+        vector<vector<int>>dp(n+5,vector<int>(m+5,-1));
+        int mx = 0;
+        solve(0,0,mat, dp, mx);
+        return mx;
+    }
+};
