@@ -1,6 +1,10 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution{
 public:
     int sr,sc;
+    // complexity --> time: O(n*m), space: O(n*m)
     int solve(int n, int m, vector<vector<int>>& mat, vector<vector<int>>& dp,int &mx)
     {
         if(n>=sr or m>= sc) return 0;
@@ -19,11 +23,49 @@ public:
         
         return dp[n][m];
     }
+    
+      // complexity --> time: O(n*m), space: O(n*m)
+        int solveTabular(vector<vector<int>>& mat,int &mx)
+    {
+        vector<vector<int>>dp(sr+3,vector<int>(sc+3,0));
+        
+        for(int i=sr-1;i>=0;i--){
+            for(int j=sc-1;j>=0;j--){
+                 int right = dp[i+1][j];
+                 int diagonal=dp[i+1][j+1];
+                 int down =  dp[i][j+1];
+                 if(mat[i][j]==1){
+                     dp[i][j] = 1+ min(right, min(down,diagonal));
+                     mx = max(mx,dp[i][j]);
+                 }else dp[i][j] = 0;
+            }
+        }
+        return dp[sr][sc];
+    }
+      // complexity --> time: O(n*m), space: O(1)
+    int solveWithSpaceComplexityLess(vector<vector<int>>& mat,int &mx){
+        
+        for(int i=sr-1;i>=0;i--){
+            for(int j=sc-1;j>=0;j--){
+                 int right = (i+1 < sr) ? mat[i+1][j] : 0 ;
+                 int diagonal=(i+1 < sr and j+1< sc) ? mat[i+1][j+1] : 0;
+                 int down = (j+1 < sc) ? mat[i][j+1] : 0;
+                 if(mat[i][j]==1){
+                     mat[i][j] = 1+ min(right, min(down,diagonal));
+                     mx = max(mx,mat[i][j]);
+                 }else mat[i][j] = 0;
+            }
+        }
+        return mat[sr-1][sc-1];
+    }
+    
     int maxSquare(int n, int m, vector<vector<int>> mat){
         sr = mat.size(), sc =mat[0].size();
-        vector<vector<int>>dp(n+5,vector<int>(m+5,-1));
+       // vector<vector<int>>dp(n+5,vector<int>(m+5,-1));
         int mx = 0;
-        solve(0,0,mat, dp, mx);
+       // solve(0,0,mat, dp, mx);
+        solveWithSpaceComplexityLess(mat,mx);
         return mx;
     }
 };
+
