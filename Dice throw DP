@@ -1,0 +1,20 @@
+class Solution {
+  public:
+   
+   long long solve(int face, int dice, int target, vector<vector<long long>>&dp){
+       if(target<0) return 0;
+       if(target == 0 and dice!=0) return 0;
+       if(target !=0 and dice ==0) return 0;
+       if(target == 0 and dice ==0 ) return 1;
+       if(dp[dice][target]!=-1) return dp[dice][target];
+       long long ans = 0;
+       for(int i=1;i<=face;i++){
+           ans+= solve(face, dice-1, target-i,dp);
+       }
+       return dp[dice][target] = ans;
+   }
+    long long noOfWays(int M , int N , int X) {
+        vector<vector<long long>>dp(N+3,vector<long long>(X+3,-1));
+        return solve(M,N,X,dp);
+    }
+};
