@@ -1,0 +1,26 @@
+class Solution{
+public:
+    int solve(int i, int N, int a[], long long sum, vector<vector<int>>&dp){
+          if(i==N) return 0;
+          if(sum<0) return 0;
+          if(sum ==0) return 1;
+          if(dp[i][sum]!=-1) return dp[i][sum];
+       
+       
+         bool  x =solve(i+1, N, a, sum-a[i],dp);
+         bool y=solve(i+1, N, a, sum,dp);
+         return dp[i][sum] = x||y;
+    }
+    int equalPartition(int N, int arr[])
+    {
+        long long sum = 0;
+        for(int i=0;i<N;i++){
+            sum=sum+ arr[i];
+        }
+        if(sum%2==0) {
+             vector<vector<int>>dp(N+1,vector<int>(sum+1, -1));
+             return solve(0, N, arr, sum/2,dp);
+        }else return 0;
+      
+    }
+};
