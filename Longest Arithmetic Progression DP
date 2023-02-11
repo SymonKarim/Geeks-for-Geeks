@@ -1,0 +1,18 @@
+class Solution{   
+public:
+    int lengthOfLongestAP(int A[], int n) {
+        if(n<=2) return n; int mx = INT_MIN;
+       unordered_map<int, int> dp[n+1];
+       for(int i=1;i<n;i++){
+           for(int j=0;j<i;j++){
+               int cnt =1, diff = A[i] - A[j];
+               if(dp[j].count(diff)){
+                   cnt = dp[j][diff];
+               }
+               dp[i][diff] = 1+cnt;
+               if(1+cnt>mx) mx = max(mx, 1+cnt);
+           }
+       }
+       return mx;
+    }
+};
